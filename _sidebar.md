@@ -1,5 +1,15 @@
 <!-- docs/_sidebar.md -->
 
+Dark Mode:
+
+<div class="onoffswitch" >
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0" >
+    <label class="onoffswitch-label" for="myonoffswitch">
+        <span onclick="toggle()" class="onoffswitch-inner"></span>
+        <span onclick="toggle()" class="onoffswitch-switch"></span>
+    </label>
+</div>
+
 * OSM CLI Tools
   * [osm2pgsql](/osm2pgsql/README.md)
     * [Instructions](/osm2pgsql/README.md)
