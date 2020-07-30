@@ -1,0 +1,32 @@
+{
+  "name": "osm-depolyment-stack",
+  "version": "0.1.0",
+  "description": "This repo describes how to deploy the osm ecosystem",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docsify": "docsify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MapColonies/osm-depolyment-stack.git"
+  },
+  "keywords": [
+    "docs",
+    "osm",
+    "k8s",
+    "container",
+    "docker"
+  ],
+  "author": "Daniel  Hermon <danielhermonsync@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MapColonies/osm-depolyment-stack/issues"
+  },
+  "homepage": "https://github.com/MapColonies/osm-depolyment-stack#readme",
+  "dependencies": {
+    "docsify": "^4.11.4",
+    "docsify-cli": "^4.4.1",
+    "now": "^19.2.0"
+  }
+}
