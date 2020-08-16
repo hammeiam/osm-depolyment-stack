@@ -1,6 +1,6 @@
 # osm-seed
 
-Easily installation for the OpenStreetMap software stack.
+Easy installation for the OpenStreetMap software stack.
 
 # Requirements
 
@@ -13,7 +13,7 @@ You will need `docker` and `docker-compose` installed on your system
 
 ## Installing osm-seed
 
-Clone osm-seed repo:
+Clone the osm-seed repo:
 
 ```
 git clone https://github.com/developmentseed/osm-seed.git
@@ -27,82 +27,111 @@ cp .env.example .env
 cp .env-tiler.example .env-tiler
 ```
 
-In `.env` file, under `# Container: populate-dbapi`, add a url for `URL_FILE_TO_IMPORT` for downloadnig the data
+In `.env` file, under `# Container: populate-dbapi`, add the url for `URL_FILE_TO_IMPORT` for downloading the pbf data to import into the db.
+you can find files in the following link: [geofabrik](https://download.geofabrik.de/index.html)
 
-For example, israel data:
+For example, to import israel's data:
 ```
 URL_FILE_TO_IMPORT=http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf
 ```
 Comment everything under  `##Container osm-processor`
+```
+##Container osm-processor
+# STORAGE
+#URL_FILE_TO_PROCESS=https://s3.amazonaws.com/osmseed-staging/pbf/dc.pbf
+#OSM_FILE_ACTION=simple_pbf
+```
 
-Build and run docker-compose: 
+Build and run the app using docker-compose: 
 
 ```
 docker-compose build
 docker-compose up
 ```
 
-Once `docker-compose` is running, you should be able to access a local instance of the OpenStreetMap website on `http://localhost:80`
+Once `docker-compose` is running, you should be able to access a local instance of the OpenStreetMap website on `http://localhost`
 
-NOTE that downloading israel data is a process that run behind the scenes, so not all the data should appear right away (its take almost 20 minutes)
+NOTE that downloading the data and populating the db is a process that runs behind the scenes, so not all the data should appear right away (it can take up to 20 minutes for israel).
 
 ## Setup pgAdmin4
+pgAdmin4 is a web based UI for managing postgreSQL.
 
-Create a pgAdmin4 containr: 
+1. Create a pgAdmin4 container: 
 
 ```
-docker run -p 5000:80 -e 'PGADMIN_DEFAULT_EMAIL=$EMAIL' -e 'PGADMIN_DEFAULT_PASSWORD=$PASSWORD' -d dpage/pgadmin4
+docker run -p 5000:80 --network="osm-seed_default" -e 'PGADMIN_DEFAULT_EMAIL=$EMAIL' -e 'PGADMIN_DEFAULT_PASSWORD=$PASSWORD' -d dpage/pgadmin4
 ```
 
 Now you should be able to access a local instance of the pgAdmin4 website on `http://localhost:5000`
 
-Log in with your email and password
+2. Log in with the email and password from the previous command.
 
-## Create osm user
+3. Right click on servers at the top left corner and click on create :arrow_right:  new server.
 
-Go to the osm website on your local machine `http://localhost:80`
+4. fill the form with the following information.
 
-click `sign up` on top right of the window. Follow the instractions and create a new user. At the end of the process you should redirect to `http://localhost/user/save` and see Application error on screen.
+> * NAME: openstreetmap
+> * HOST: db
+> * PORT: 5432
+> * USERNAME: postgres
+> * PASSWORD: 1234
 
-Go to your local pgAdmine instance on `http://localhost:5000` and create a new server with the following information:
+**Note**: If you changed the default values in the .env file, change the values above accordingly.
 
-* NAME: openstreetmap
-* HOST: your postgres container ip.
-* PORT: 5432
-* USERNAME: postgres
-* PASSWORD: 1234 
+## Create OSM user
 
-Click on openstreetmap database and find USERS table
+1. Go to the OSM website on your local machine `http://localhost`.
+2. click `sign up` button on top right of the window.
+3. Follow the instructions and create a new user.
 
-Find your user and change the status column to `active`
+At the end of the process you should be redirected to `http://localhost/user/save` and see Application error on screen.
 
-Go back to your openstreetmap application log in with your activated user.
+4. On pgAdmin, Click on databases :arrow_right: openstreetmap :arrow_right: schemas :arrow_right: public :arrow_right: tables, and find the USERS table.
+
+5. right click the USERS table and click View/Edit data :arrow_right: All Rows.
+
+6. Find your user at the bottom table, double click the status column, and change the text to `active`.
+
+7. Click execute (or press F6).
+
+8. Go back to your openstreetmap application log in with your activated user.
+
 
 ## Configure ID editor
 
-Click on your user name on top right of the website and click `My Settings`
+1. Click on your user name on top right of the website and click `My Settings`.
 
-Under the header `My Settings` click `oauth settings`
+2. Under the header `My Settings` click `oauth settings`.
 
-Click `Register your application` and fill the form with the following information:
+3. Click `Register your application` and fill the form with the following information:
 
-* Name: WHATEVERYOUWANT
-* Main Application URL: http://localhost
+> * Name: WHATEVERYOUWANT
+> * Main Application URL: http://localhost
 
-Check all the boxes and click Register.
+4. Check all the boxes and click Register.
 
-Copy the `Consumer Key` from the screen and open `application.yml` on directory: `osm-seed/openstreetmap-website/config/application.yml`
+5. Copy the `Consumer Key` from the screen.
 
-Go to `default_editor` and make sure the value is "id"
-Uncomment the line `id_key` below an paste the `Consumer Key` to its value.
+6. Open `application.yml` on directory: `osm-seed/openstreetmap-website/config/application.yml`
 
-save!
+7. Make sure the value of the `default_editor` field is `id`.
+```yaml
+# Default editor
+default_editor: "id"
+```
 
-Build and run docker-compose for the second time:
+8. Uncomment the line `id_key` below an paste the `Consumer Key` as its value.
+```yaml
+# OAuth consumer key for iD
+id_key: "YOUR_CONSUMER_KEY"
+```
+9. save!
+
+10. Build and run docker-compose for the second time:
 
 ```
 docker-compose build
 docker-compose up
 ```
 
-### Done. now you can edit in openstreetmap!
+### Done. now you can edit in openstreetmap :sunglasses: 
