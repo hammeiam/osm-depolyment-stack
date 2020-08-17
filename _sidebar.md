@@ -25,6 +25,11 @@ Dark Mode:
     * [storage.yml](https://github.com/MapColonies/osm-depolyment-stack/tree/master/openstreetmap-website/config/storage.yml)
 * [OSM-seed](/osm-seed/README.md)
   * [Instructions](/osm-seed/README.md)
-
+* Synchronization
+  * 1 way
+    * Pipe based
+      * [osmosis-pipe-sync](/osmosis-pipe-sync/README.md)
+          * [Instructions](/osmosis-pipe-sync/README.md)
+          * [Resources](https://github.com/MapColonies/osm-depolyment-stack/tree/master/osmosis-pipe-sync)
 * About
   * [Link to github repo](https://github.com/MapColonies/osm-depolyment-stack)
