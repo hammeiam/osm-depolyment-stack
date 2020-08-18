@@ -2,9 +2,13 @@
 
 This repo contains:
 
-* Containarized OSM tools
+* Containerized OSM tools
 
 * Deployment of the OSM ecosystem using [osm-seed](https://github.com/developmentseed/osm-seed)
+  
+* Synchronization process of 2 OSM stacks
+  * using diff files.
+  * using diff pipeline(based on osmosis) between two 2 databases.
 
 ## Components
 
